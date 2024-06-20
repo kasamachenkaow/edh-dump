@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    function displayCard(cardData, zoneElement, isDeck = false) {
+    function displayCard(cardData, zoneElement, isDeck = false, position = null) {
         const cardElement = document.createElement('div');
         cardElement.className = 'card';
         if (isDeck) {
@@ -102,6 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
         cardElement.innerHTML = `<img src="${imageUrl}" alt="${cardData.name}" />`;
         cardElement.addEventListener('click', () => showCardPopup(cardData));
         cardElement.addEventListener('dragstart', (e) => dragStart(e, cardData));
+
+        if (position) {
+            cardElement.style.position = 'absolute';
+            cardElement.style.left = position.x + 'px';
+            cardElement.style.top = position.y + 'px';
+        }
+
         zoneElement.appendChild(cardElement);
     }
 
@@ -222,7 +229,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         state.zones[zone] = state.zones[zone].filter(c => c.name !== event.card.name);
                     }
                     // Add the card to the new zone
-                    state.zones[event.to].push(event.card);
+                    state.zones[event.to].push({ ...event.card, position: event.position });
                     break;
                 default:
                     break;
@@ -244,14 +251,15 @@ document.addEventListener('DOMContentLoaded', () => {
         renderZone('exiled-zone', gameState.zones.exiledZone);
         renderZone('deck', gameState.zones.deck, true);  // Deck should be face-down
         renderZone('hand', gameState.zones.hand, false, true);  // Hand should be face-up and draggable
-        renderZone('battlefield', gameState.zones.battlefield, false, true);  // Battlefield should be face-up and draggable
+        renderZone('battlefield', gameState.zones.battlefield, false, true, true);  // Battlefield should be face-up, draggable, and freely positioned
     }
 
-    function renderZone(zoneId, cards, isFaceDown = false, isDraggable = false) {
+    function renderZone(zoneId, cards, isFaceDown = false, isDraggable = false, isFreePosition = false) {
         const zoneElement = document.getElementById(zoneId);
         zoneElement.innerHTML = ''; // Clear existing cards
         cards.forEach(card => {
-            displayCard(card, zoneElement, zoneId === 'deck');
+            const position = isFreePosition ? card.position : null;
+            displayCard(card, zoneElement, zoneId === 'deck', position);
         });
     }
 
@@ -273,19 +281,20 @@ document.addEventListener('DOMContentLoaded', () => {
         zoneElement.addEventListener('drop', (e) => {
             e.preventDefault();
             const cardData = JSON.parse(e.dataTransfer.getData('application/json'));
-            moveCardToZone(cardData, zoneId);
+            const position = { x: e.offsetX, y: e.offsetY };
+            moveCardToZone(cardData, zoneId, position);
         });
     });
 
-    function moveCardToZone(cardData, zoneId) {
+    function moveCardToZone(cardData, zoneId, position = null) {
         // Remove the card from its current zone
         for (let zone in gameState.zones) {
             gameState.zones[zone] = gameState.zones[zone].filter(c => c.name !== cardData.name);
         }
         // Add the card to the new zone
-        gameState.zones[zoneId].push(cardData);
+        gameState.zones[zoneId].push({ ...cardData, position });
         renderGameState();
-        sendEvent({ type: 'moveCard', card: cardData, to: zoneId });
+        sendEvent({ type: 'moveCard', card: cardData, to: zoneId, position });
     }
 
     window.showDeckInput = showDeckInput;

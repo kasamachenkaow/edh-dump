@@ -21,7 +21,6 @@
 }
 
 .card {
-    position: relative;
     width: 75px; /* Reduced size */
     height: 105px; /* Adjusted aspect ratio */
 }
@@ -73,10 +72,4 @@
 
 .card-popup img {
     width: 200px;
-}
-
-#deck .card {
-    position: absolute;
-    top: 0;
-    left: 0;
 }
