@@ -1,0 +1,82 @@
+#game-board {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 600px;
+    border: 2px solid #ccc;
+    background-color: #222;
+}
+
+#battlefield {
+    width: 80%;
+    height: 80%;
+    border: 2px solid #fff;
+    position: relative;
+}
+
+#controls {
+    margin-top: 20px;
+}
+
+.card {
+    position: relative;
+    width: 75px; /* Reduced size */
+    height: 105px; /* Adjusted aspect ratio */
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image fits within the container */
+}
+
+#hand, #deck, #graveyard, #exiled-zone, #command-zone {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin: 5px;
+    min-height: 120px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#deck-controls button, #host-controls button, #deck-loading button {
+    margin: 5px;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border: 2px solid #ccc;
+}
+
+.popup textarea {
+    width: 100%;
+}
+
+.card-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    padding: 20px;
+    border: 2px solid #ccc;
+    z-index: 1000;
+}
+
+.card-popup img {
+    width: 200px;
+}
+
+#deck .card {
+    position: absolute;
+    top: 0;
+    left: 0;
+}

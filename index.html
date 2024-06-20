@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MTG EDH Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <div id="game-board">
+            <div id="battlefield">Battlefield</div>
+        </div>
+        <div id="controls">
+            <div id="life-totals">
+                <div>Player 1: <span id="life-total-p1">40</span></div>
+                <div>Player 2: <span id="life-total-p2">40</span></div>
+                <div>Player 3: <span id="life-total-p3">40</span></div>
+                <div>Player 4: <span id="life-total-p4">40</span></div>
+            </div>
+            <div id="zones">
+                <div id="command-zone">Command Zone</div>
+                <div id="graveyard">Graveyard</div>
+                <div id="exiled-zone">Exiled Zone</div>
+                <div id="deck">Deck</div>
+                <div id="hand">Hand</div>
+                <div id="deck-controls">
+                    <button onclick="drawCard()">Draw Card</button>
+                    <button onclick="shuffleDeck()">Shuffle Deck</button>
+                    <button onclick="searchDeck()">Search Deck</button>
+                    <button onclick="putUnderDeck()">Put Under Deck</button>
+                </div>
+            </div>
+            <div id="turn-phases">
+                <div>Turn Phases: <span id="turn-phase">Untap</span></div>
+            </div>
+            <div id="host-controls">
+                <button id="start-hosting">Start Hosting</button>
+                <button id="join-game">Join Game</button>
+            </div>
+            <div id="deck-loading">
+                <button onclick="showDeckInput()">Load Deck</button>
+                <div id="deck-input-popup" class="popup">
+                    <textarea id="deck-input" rows="10" cols="50" placeholder="Paste your deck list here"></textarea>
+                    <button onclick="loadDeckFromInput()">Load</button>
+                    <button onclick="hideDeckInput()">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
